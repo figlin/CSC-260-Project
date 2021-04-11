@@ -1,10 +1,10 @@
 fileFormatVersion: 2
 guid: a3e5bbfb8c13d8f479f8d00fcbc7884e
-timeCreated: 1481938091
-licenseType: Free
 MonoImporter:
+  externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - tile: {fileID: 1000011164241878, guid: af7a25f9117a27345bd4fc983e1bf621, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

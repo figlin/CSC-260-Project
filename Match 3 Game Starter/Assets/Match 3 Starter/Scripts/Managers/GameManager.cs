@@ -25,7 +25,8 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviour
+{
 	public static GameManager instance;
 
 	public GameObject faderObj;
@@ -38,43 +39,54 @@ public class GameManager : MonoBehaviour {
 	private string currentScene;
 	private AsyncOperation async;
 
-	void Awake() {
+	void Awake()
+	{
 		// Only 1 Game Manager can exist at a time
-		if (instance == null) {
+		if (instance == null)
+		{
 			DontDestroyOnLoad(gameObject);
 			instance = GetComponent<GameManager>();
 			SceneManager.sceneLoaded += OnLevelFinishedLoading;
-		} else {
+		}
+		else
+		{
 			Destroy(gameObject);
 		}
 	}
 
-	void Update() {
-		if (Input.GetKeyDown(KeyCode.Escape)) {
+	void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
 			ReturnToMenu();
 		}
 	}
 
 	// Load a scene with a specified string name
-	public void LoadScene(string sceneName) {
+	public void LoadScene(string sceneName)
+	{
 		instance.StartCoroutine(Load(sceneName));
 		instance.StartCoroutine(FadeOut(instance.faderObj, instance.faderImg));
 	}
 
 	// Reload the current scene
-	public void ReloadScene() {
+	public void ReloadScene()
+	{
 		LoadScene(SceneManager.GetActiveScene().name);
 	}
 
-	private void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode) {
+	private void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
+	{
 		currentScene = scene.name;
 		instance.StartCoroutine(FadeIn(instance.faderObj, instance.faderImg));
 	}
 
 	//Iterate the fader transparency to 100%
-	IEnumerator FadeOut(GameObject faderObject, Image fader) {
+	IEnumerator FadeOut(GameObject faderObject, Image fader)
+	{
 		faderObject.SetActive(true);
-		while (fader.color.a < 1) {
+		while (fader.color.a < 1)
+		{
 			fader.color += fadeTransparency;
 			yield return new WaitForSeconds(fadeSpeed);
 		}
@@ -82,8 +94,10 @@ public class GameManager : MonoBehaviour {
 	}
 
 	// Iterate the fader transparency to 0%
-	IEnumerator FadeIn(GameObject faderObject, Image fader) {
-		while (fader.color.a > 0) {
+	IEnumerator FadeIn(GameObject faderObject, Image fader)
+	{
+		while (fader.color.a > 0)
+		{
 			fader.color -= fadeTransparency;
 			yield return new WaitForSeconds(fadeSpeed);
 		}
@@ -91,50 +105,58 @@ public class GameManager : MonoBehaviour {
 	}
 
 	// Begin loading a scene with a specified string asynchronously
-	IEnumerator Load(string sceneName) {
+	IEnumerator Load(string sceneName)
+	{
 		async = SceneManager.LoadSceneAsync(sceneName);
 		async.allowSceneActivation = false;
 		yield return async;
 		isReturning = false;
-    }
+	}
 
 	// Allows the scene to change once it is loaded
-	public void ActivateScene() {
+	public void ActivateScene()
+	{
 		async.allowSceneActivation = true;
 	}
 
 	// Get the current scene name
-	public string CurrentSceneName {
-		get{
+	public string CurrentSceneName
+	{
+		get
+		{
 			return currentScene;
 		}
 	}
 
-	public void ExitGame() {
+	public void ExitGame()
+	{
 		// If we are running in a standalone build of the game
-		#if UNITY_STANDALONE
+#if UNITY_STANDALONE
 			// Quit the application
 			Application.Quit();
-		#endif
+#endif
 
 		// If we are running in the editor
-		#if UNITY_EDITOR
+#if UNITY_EDITOR
 			// Stop playing the scene
 			UnityEditor.EditorApplication.isPlaying = false;
-		#endif
+#endif
 	}
 
 	private bool isReturning = false;
-	public void ReturnToMenu() {
-		if (isReturning) {
+	public void ReturnToMenu()
+	{
+		if (isReturning)
+		{
 			return;
 		}
 
-        if (CurrentSceneName != "Menu") {
+		if (CurrentSceneName != "Menu")
+		{
 			StopAllCoroutines();
 			LoadScene("Menu");
 			isReturning = true;
-        }
+		}
 	}
 
 }

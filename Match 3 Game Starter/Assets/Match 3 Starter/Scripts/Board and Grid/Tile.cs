@@ -101,6 +101,7 @@ public class Tile : MonoBehaviour
 		render2.sprite = render.sprite;
 		render.sprite = tempSprite;
 		SFXManager.instance.PlaySFX(Clip.Swap);
+		GUIManager.instance.MoveCounter--;		// decrements the move counter after every swap, regardless if a match or not
 	}
 
 	private GameObject GetAdjacent(Vector2 castDir)
@@ -147,13 +148,17 @@ public class Tile : MonoBehaviour
 			for (int i = 0; i < matchingTiles.Count; i++)
 			{
 				matchingTiles[i].GetComponent<SpriteRenderer>().sprite = null;
+				GUIManager.instance.Score += 50;
 			}
 			matchFound = true;
+			//GUIManager.instance.Score += 200;
 		}
+		
 	}
 
 	public void ClearAllMatches()
 	{
+		List<GameObject> matchingTiles = new List<GameObject>();
 		if (render.sprite == null)
 		{
 			return;
@@ -170,6 +175,8 @@ public class Tile : MonoBehaviour
 			SFXManager.instance.PlaySFX(Clip.Clear);
 			GUIManager.instance.MoveCounter--;
 			GUIManager.instance.Score += 50;
+			
 		}
+
 	}
 }

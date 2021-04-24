@@ -101,7 +101,7 @@ public class Tile : MonoBehaviour
 		render2.sprite = render.sprite;
 		render.sprite = tempSprite;
 		SFXManager.instance.PlaySFX(Clip.Swap);
-		GUIManager.instance.MoveCounter--;		// decrements the move counter after every swap, regardless if a match or not
+		GUIManager.instance.MoveCounter--;      // decrements the move counter after every swap, regardless if a match or not
 	}
 
 	private GameObject GetAdjacent(Vector2 castDir)
@@ -125,8 +125,8 @@ public class Tile : MonoBehaviour
 	}
 
 	private List<GameObject> FindMatch(Vector2 castDir)
-	{ 
-		List<GameObject> matchingTiles = new List<GameObject>(); 
+	{
+		List<GameObject> matchingTiles = new List<GameObject>();
 		RaycastHit2D hit = Physics2D.Raycast(transform.position, castDir);
 		while (hit.collider != null && hit.collider.GetComponent<SpriteRenderer>().sprite == render.sprite)
 		{
@@ -139,7 +139,7 @@ public class Tile : MonoBehaviour
 	private void ClearMatch(Vector2[] paths)
 	{
 		List<GameObject> matchingTiles = new List<GameObject>();
-		for (int i = 0; i < paths.Length; i++) 
+		for (int i = 0; i < paths.Length; i++)
 		{
 			matchingTiles.AddRange(FindMatch(paths[i]));
 		}
@@ -153,7 +153,7 @@ public class Tile : MonoBehaviour
 			matchFound = true;
 			//GUIManager.instance.Score += 200;
 		}
-		
+
 	}
 
 	public void ClearAllMatches()
@@ -175,7 +175,7 @@ public class Tile : MonoBehaviour
 			SFXManager.instance.PlaySFX(Clip.Clear);
 			GUIManager.instance.MoveCounter--;
 			GUIManager.instance.Score += 50;
-			
+
 		}
 
 	}

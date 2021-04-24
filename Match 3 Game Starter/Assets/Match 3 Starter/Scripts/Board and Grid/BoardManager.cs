@@ -1,4 +1,6 @@
-﻿/*
+﻿
+  
+/*
  * Copyright (c) 2017 Razeware LLC
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,7 +26,8 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class BoardManager : MonoBehaviour {
+public class BoardManager : MonoBehaviour
+{
 	public static BoardManager instance;
 	public List<Sprite> characters = new List<Sprite>();
 	public GameObject tile;
@@ -34,24 +37,28 @@ public class BoardManager : MonoBehaviour {
 
 	public bool IsShifting { get; set; }
 
-	void Start () {
+	void Start()
+	{
 		instance = GetComponent<BoardManager>();
 
 		Vector2 offset = tile.GetComponent<SpriteRenderer>().bounds.size;
-        CreateBoard(offset.x, offset.y);
-    }
+		CreateBoard(offset.x, offset.y);
+	}
 
-	private void CreateBoard (float xOffset, float yOffset) {
+	private void CreateBoard(float xOffset, float yOffset)
+	{
 		tiles = new GameObject[xSize, ySize];
 
-        float startX = transform.position.x;
+		float startX = transform.position.x;
 		float startY = transform.position.y;
 
 		Sprite[] previousLeft = new Sprite[ySize]; //Prevent Repeating Tiles START -MZ
 		Sprite previousBelow = null; //Prevent Repeating Tiles END
 
-		for (int x = 0; x < xSize; x++) {
-			for (int y = 0; y < ySize; y++) {
+		for (int x = 0; x < xSize; x++)
+		{
+			for (int y = 0; y < ySize; y++)
+			{
 				GameObject newTile = Instantiate(tile, new Vector3(startX + (xOffset * x), startY + (yOffset * y), 0), tile.transform.rotation);
 				tiles[x, y] = newTile;
 				newTile.transform.parent = transform; //Randomize Board START -MZ
@@ -64,13 +71,13 @@ public class BoardManager : MonoBehaviour {
 				newTile.GetComponent<SpriteRenderer>().sprite = newSprite; //Randomize Board END
 				previousLeft[y] = newSprite;
 				previousBelow = newSprite;
-				
+
 			}
-        }
-    }
+		}
+	}
 
 	public IEnumerator FindNullTiles()
-    {
+	{
 		for (int x = 0; x < xSize; x++)
 		{
 			for (int y = 0; y < ySize; y++)
@@ -82,7 +89,7 @@ public class BoardManager : MonoBehaviour {
 				}
 			}
 		}
-		
+
 		for (int x = 0; x < xSize; x++)
 		{
 			for (int y = 0; y < ySize; y++)
@@ -99,10 +106,10 @@ public class BoardManager : MonoBehaviour {
 		int nullCount = 0;
 
 		for (int y = yStart; y < ySize; y++)
-		{ 
+		{
 			SpriteRenderer render = tiles[x, y].GetComponent<SpriteRenderer>();
 			if (render.sprite == null)
-			{ 
+			{
 				nullCount++;
 			}
 			renders.Add(render);
@@ -111,9 +118,9 @@ public class BoardManager : MonoBehaviour {
 		for (int i = 0; i < nullCount; i++)
 		{
 			yield return new WaitForSeconds(shiftDelay);
-			
+
 			for (int k = 0; k < renders.Count - 1; k++)
-			{ 
+			{
 				renders[k].sprite = renders[k + 1].sprite;
 				renders[k + 1].sprite = GetNewSprite(x, ySize - 1); // Ensures the board is always filled - JP
 			}

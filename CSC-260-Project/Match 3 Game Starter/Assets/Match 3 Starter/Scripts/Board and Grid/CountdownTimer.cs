@@ -12,6 +12,12 @@ public class CountdownTimer : MonoBehaviour
     public float timeRemaining = 60f;
     public bool timerIsRunning = false;
     public Text timeText;
+    public Text addedTime;
+    private float timeToAppear = 2f;
+    private float timewhenDisappear;
+
+
+
 
     private void Start()
     {
@@ -27,6 +33,7 @@ public class CountdownTimer : MonoBehaviour
         {
             if (timeRemaining > 0)
             {
+              
                 timeRemaining -= Time.deltaTime;
                 DisplayTime(timeRemaining);
             }
@@ -39,6 +46,11 @@ public class CountdownTimer : MonoBehaviour
 		        gameOverPanel.SetActive(true);
                 GUIManager.instance.GameOver();
             }
+        }
+
+        if (addedTime.enabled && (Time.time >= timewhenDisappear))
+        {
+           addedTime.enabled = false;
         }
     }
     
@@ -53,5 +65,17 @@ public class CountdownTimer : MonoBehaviour
         timeText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
         
     }
+
+
+
+    public void EnableText()
+    {
+        addedTime.enabled = true;
+        timewhenDisappear = Time.time + timeToAppear;
+    }
+
+    //We check every frame if the timer has expired and the text should disappear
     
 }
+
+

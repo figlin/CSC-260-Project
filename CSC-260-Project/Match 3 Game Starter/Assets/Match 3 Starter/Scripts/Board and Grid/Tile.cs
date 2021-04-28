@@ -153,19 +153,24 @@ public class Tile : MonoBehaviour
 				
 			}
 			matchFound = true;
-			GUIManager.instance.Score += 100;
 			
-		}
+			GUIManager.instance.Score += (150 * (matchingTiles.Count - 1));
+			CountdownTimer.instance.timeRemaining += 2;
+			//timeText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+			CountdownTimer.instance.addedTime.text = string.Format("+2");
+
+		} 
 		
-		if (matchingTiles.Count == 3)
+		/*if (matchingTiles.Count == 3)
 		{
 			for (int i = 0; i < matchingTiles.Count; i++)
 			{
 				matchingTiles[i].GetComponent<SpriteRenderer>().sprite = null;
 			}
 			matchFound = true;
-			GUIManager.instance.Score += 500;	// bonus points added to the 100 for matching 3
-		
+			GUIManager.instance.Score += 500; // bonus points added to the 100 for matching 3
+			CountdownTimer.instance.timeRemaining += 2;
+
 		}
 
 		if (matchingTiles.Count == 4)
@@ -175,9 +180,10 @@ public class Tile : MonoBehaviour
 				matchingTiles[i].GetComponent<SpriteRenderer>().sprite = null;
 			}
 			matchFound = true;
-			GUIManager.instance.Score += 800;	// bonus points added to the 100 for matching 3
-		
-		}			
+			GUIManager.instance.Score += 800;   // bonus points added to the 100 for matching 3
+			CountdownTimer.instance.timeRemaining += 3;
+
+		}	*/		
 
 	}
 

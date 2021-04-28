@@ -26,6 +26,7 @@ using System.Collections.Generic;
 
 public class Tile : MonoBehaviour
 {
+	public static Tile instance;
 	private static Color selectedColor = new Color(.5f, .5f, .5f, 1.0f);
 	private static Tile previousSelected = null;
 
@@ -33,7 +34,7 @@ public class Tile : MonoBehaviour
 	private bool isSelected = false;
 
 	private Vector2[] adjacentDirections = new Vector2[] { Vector2.up, Vector2.down, Vector2.left, Vector2.right };
-	private bool matchFound = false;
+	public bool matchFound = false;
 
 	void Awake()
 	{
@@ -143,26 +144,29 @@ public class Tile : MonoBehaviour
 		{
 			matchingTiles.AddRange(FindMatch(paths[i]));
 		}
-		if (matchingTiles.Count >= 2 || matchingTiles.Count == 3)
+		// Give a flat 100 points for a match 3
+		if (matchingTiles.Count >= 2)
 		{
 			for (int i = 0; i < matchingTiles.Count; i++)
 			{
 				matchingTiles[i].GetComponent<SpriteRenderer>().sprite = null;
-				GUIManager.instance.Score += 50;
+				
 			}
 			matchFound = true;
+			GUIManager.instance.Score += 100;
 			
-			if (matchingTiles.Count >= 4)
+		}
+		// If you match 4 or 5 tiles get an extra 500 points on top of the 100 for a match 3
+		if (matchingTiles.Count >= 3)
 		{
 			for (int i = 0; i < matchingTiles.Count; i++)
 			{
 				matchingTiles[i].GetComponent<SpriteRenderer>().sprite = null;
-				GUIManager.instance.Score += 200;
 			}
 			matchFound = true;
-			
-		}	
-		}		
+			GUIManager.instance.Score += 500;
+		
+		}			
 
 	}
 
@@ -184,7 +188,6 @@ public class Tile : MonoBehaviour
 			StartCoroutine(BoardManager.instance.FindNullTiles());
 			SFXManager.instance.PlaySFX(Clip.Clear);
 			//GUIManager.instance.MoveCounter--;		// was causing the moves counter to decrement by 2 with a match
-			//GUIManager.instance.Score += 50;
 
 		}
 

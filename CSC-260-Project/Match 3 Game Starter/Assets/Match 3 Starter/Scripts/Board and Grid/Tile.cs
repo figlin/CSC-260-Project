@@ -156,15 +156,26 @@ public class Tile : MonoBehaviour
 			GUIManager.instance.Score += 100;
 			
 		}
-		// If you match 4 or 5 tiles get an extra 500 points on top of the 100 for a match 3
-		if (matchingTiles.Count >= 3)
+		
+		if (matchingTiles.Count == 3)
 		{
 			for (int i = 0; i < matchingTiles.Count; i++)
 			{
 				matchingTiles[i].GetComponent<SpriteRenderer>().sprite = null;
 			}
 			matchFound = true;
-			GUIManager.instance.Score += 500;
+			GUIManager.instance.Score += 500;	// bonus points added to the 100 for matching 3
+		
+		}
+
+		if (matchingTiles.Count == 4)
+		{
+			for (int i = 0; i < matchingTiles.Count; i++)
+			{
+				matchingTiles[i].GetComponent<SpriteRenderer>().sprite = null;
+			}
+			matchFound = true;
+			GUIManager.instance.Score += 800;	// bonus points added to the 100 for matching 3
 		
 		}			
 

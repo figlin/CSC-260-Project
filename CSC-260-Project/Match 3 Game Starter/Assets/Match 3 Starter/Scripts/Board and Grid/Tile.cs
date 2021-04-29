@@ -102,7 +102,7 @@ public class Tile : MonoBehaviour
 		render2.sprite = render.sprite;
 		render.sprite = tempSprite;
 		SFXManager.instance.PlaySFX(Clip.Swap);
-		GUIManager.instance.MoveCounter--;      // decrements the move counter after every swap, regardless if a match or not
+		GUIManager.instance.MoveCounter--;      // decrements the move counter after every swap, regardless if a match or not - JP
 	}
 
 	private GameObject GetAdjacent(Vector2 castDir)
@@ -160,8 +160,8 @@ public class Tile : MonoBehaviour
 			CountdownTimer.instance.addedTime.text = string.Format("+2");
 
 		} 
-		
-		/*if (matchingTiles.Count == 3)
+		/*
+		if (matchingTiles.Count == 3)
 		{
 			for (int i = 0; i < matchingTiles.Count; i++)
 			{
@@ -183,7 +183,8 @@ public class Tile : MonoBehaviour
 			GUIManager.instance.Score += 800;   // bonus points added to the 100 for matching 3
 			CountdownTimer.instance.timeRemaining += 3;
 
-		}	*/		
+		}		
+		*/
 
 	}
 
@@ -204,7 +205,7 @@ public class Tile : MonoBehaviour
 			StopCoroutine(BoardManager.instance.FindNullTiles());
 			StartCoroutine(BoardManager.instance.FindNullTiles());
 			SFXManager.instance.PlaySFX(Clip.Clear);
-			//GUIManager.instance.MoveCounter--;		// was causing the moves counter to decrement by 2 with a match
+			//GUIManager.instance.MoveCounter--;		// was causing the moves counter to decrement by 2 with a match - JP
 
 		}
 

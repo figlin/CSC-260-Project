@@ -39,7 +39,21 @@ public class CountdownTimer : MonoBehaviour
             }
             else
             {
-                //Debug.Log("Time's Up!");
+                //Debug.Log("Time's Up!");  // For testing the timer - JP
+                timeRemaining = 0;
+                timerIsRunning = false;
+                GameManager.instance.gameOver = true;
+		        gameOverPanel.SetActive(true);
+                GUIManager.instance.GameOver();
+            }
+
+            if (addedTime.enabled && (Time.time >= timewhenDisappear))
+            {
+                addedTime.enabled = false;
+            }
+            // Stop the timer when the moves run out - JP
+            if (GUIManager.instance.MoveCounter == 0)
+            {
                 timeRemaining = 0;
                 timerIsRunning = false;
                 GameManager.instance.gameOver = true;
@@ -48,10 +62,7 @@ public class CountdownTimer : MonoBehaviour
             }
         }
 
-        if (addedTime.enabled && (Time.time >= timewhenDisappear))
-        {
-           addedTime.enabled = false;
-        }
+        
     }
     
     void DisplayTime(float timeToDisplay)
@@ -65,8 +76,6 @@ public class CountdownTimer : MonoBehaviour
         timeText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
         
     }
-
-
 
     public void EnableText()
     {

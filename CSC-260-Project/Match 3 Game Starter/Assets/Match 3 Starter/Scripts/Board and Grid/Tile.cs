@@ -24,6 +24,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+
 public class Tile : MonoBehaviour
 {
 	public static Tile instance;
@@ -35,6 +36,10 @@ public class Tile : MonoBehaviour
 
 	private Vector2[] adjacentDirections = new Vector2[] { Vector2.up, Vector2.down, Vector2.left, Vector2.right };
 	public bool matchFound = false;
+	
+	
+
+
 
 	void Awake()
 	{
@@ -77,10 +82,19 @@ public class Tile : MonoBehaviour
 			{
 				if (GetAllAdjacentTiles().Contains(previousSelected.gameObject))
 				{
+					CountdownTimer.instance.matchCleared = false;
 					SwapSprite(previousSelected.render);
 					previousSelected.ClearAllMatches();
 					previousSelected.Deselect();
 					ClearAllMatches();
+					if (CountdownTimer.instance.matchCleared == false)
+					{
+						CountdownTimer.instance.combo = 0;
+						StartCoroutine(CountdownTimer.instance.ShowCombo());
+
+
+					}
+
 				}
 				else
 				{
@@ -140,6 +154,7 @@ public class Tile : MonoBehaviour
 	private void ClearMatch(Vector2[] paths)
 	{
 		List<GameObject> matchingTiles = new List<GameObject>();
+		
 		for (int i = 0; i < paths.Length; i++)
 		{
 			matchingTiles.AddRange(FindMatch(paths[i]));
@@ -147,44 +162,35 @@ public class Tile : MonoBehaviour
 		// Give a flat 100 points for a match 3
 		if (matchingTiles.Count >= 2)
 		{
-			for (int i = 0; i < matchingTiles.Count; i++)
-			{
-				matchingTiles[i].GetComponent<SpriteRenderer>().sprite = null;
-				
-			}
-			matchFound = true;
+		
 			
-			GUIManager.instance.Score += (150 * (matchingTiles.Count - 1));
-			CountdownTimer.instance.timeRemaining += 2;
-			//timeText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
-			CountdownTimer.instance.addedTime.text = string.Format("+2");
-
-		} 
-		/*
-		if (matchingTiles.Count == 3)
-		{
 			for (int i = 0; i < matchingTiles.Count; i++)
 			{
 				matchingTiles[i].GetComponent<SpriteRenderer>().sprite = null;
+
 			}
 			matchFound = true;
-			GUIManager.instance.Score += 500; // bonus points added to the 100 for matching 3
-			CountdownTimer.instance.timeRemaining += 2;
+
+			GUIManager.instance.Score += (150 * (matchingTiles.Count - 1));
+			if (CountdownTimer.instance.combo > 1)
+            {
+				GUIManager.instance.Score += 150 * CountdownTimer.instance.combo;
+			
+				StartCoroutine(CountdownTimer.instance.ShowCombo());
+			}
+			CountdownTimer.instance.timeRemaining += 1;
+			//timeText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+			//CountdownTimer.instance.addedTime.text = string.Format("+2");
+			StartCoroutine(CountdownTimer.instance.ShowaddedTime("+1", .4f));
+			CountdownTimer.instance.combo++;
+			CountdownTimer.instance.matchCleared = true;
+			
 
 		}
+		
 
-		if (matchingTiles.Count == 4)
-		{
-			for (int i = 0; i < matchingTiles.Count; i++)
-			{
-				matchingTiles[i].GetComponent<SpriteRenderer>().sprite = null;
-			}
-			matchFound = true;
-			GUIManager.instance.Score += 800;   // bonus points added to the 100 for matching 3
-			CountdownTimer.instance.timeRemaining += 3;
 
-		}		
-		*/
+
 
 	}
 
@@ -206,8 +212,12 @@ public class Tile : MonoBehaviour
 			StartCoroutine(BoardManager.instance.FindNullTiles());
 			SFXManager.instance.PlaySFX(Clip.Clear);
 			//GUIManager.instance.MoveCounter--;		// was causing the moves counter to decrement by 2 with a match - JP
-
+			
+			
 		}
 
+		
 	}
+
+	
 }

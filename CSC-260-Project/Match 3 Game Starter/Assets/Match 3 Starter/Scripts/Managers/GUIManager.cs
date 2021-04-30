@@ -35,14 +35,17 @@ public class GUIManager : MonoBehaviour
 
 	public Text scoreTxt;
 	public Text moveCounterTxt;
+
 	
+	
+
 
 	private int score, moveCounter;
 
 	void Awake()
 	{
 		
-		moveCounter = 45;
+		moveCounter = 25;
 		scoreTxt.text = score.ToString();
 		moveCounterTxt.text = moveCounter.ToString();
 		instance = GetComponent<GUIManager>();

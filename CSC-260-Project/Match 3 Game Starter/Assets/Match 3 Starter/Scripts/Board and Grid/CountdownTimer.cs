@@ -13,8 +13,11 @@ public class CountdownTimer : MonoBehaviour
     public bool timerIsRunning = false;
     public Text timeText;
     public Text addedTime;
-    private float timeToAppear = 2f;
-    private float timewhenDisappear;
+    public Text comboTxt;
+    public float fadeOutTime;
+    public int combo = 1;
+    public bool matchCleared = false;
+    public string ComboNotif;
 
 
 
@@ -47,10 +50,7 @@ public class CountdownTimer : MonoBehaviour
                 GUIManager.instance.GameOver();
             }
 
-            if (addedTime.enabled && (Time.time >= timewhenDisappear))
-            {
-                addedTime.enabled = false;
-            }
+         
             // Stop the timer when the moves run out - JP
             if (GUIManager.instance.MoveCounter == 0)
             {
@@ -77,14 +77,46 @@ public class CountdownTimer : MonoBehaviour
         
     }
 
-    public void EnableText()
+    void ComboNotication(int combo)
     {
-        addedTime.enabled = true;
-        timewhenDisappear = Time.time + timeToAppear;
+
+     
+
+        //comboTxt.text = string.Format("Combo\n150 x {d}", combo);
+
     }
 
+
+
     //We check every frame if the timer has expired and the text should disappear
-    
+
+    public IEnumerator ShowaddedTime(string message, float delay)
+    {
+        addedTime.text = message;
+        addedTime.enabled = true;
+        yield return new WaitForSeconds(delay);
+        addedTime.enabled = false;
+    }
+    /*public IEnumerator ShowCombo(float delay)
+    {
+        comboTxt.text = string.Format("Combo!\n150x{0}", combo);
+        comboTxt.enabled = true;
+        yield return new WaitForSeconds(delay);
+        comboTxt.enabled = false;
+    } */
+    public IEnumerator ShowCombo()
+    {
+        if (combo < 2) yield return comboTxt.enabled = false;
+        comboTxt.text = string.Format("Combo!\n150x{0}", combo);
+        if (combo >= 2) yield return comboTxt.enabled = true;
+        //yield return new WaitUntil(() => match);
+        //comboTxt.enabled = false; 
+
+       
+       
+    }
+
+
 }
 
 
